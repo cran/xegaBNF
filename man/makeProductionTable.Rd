@@ -33,3 +33,10 @@ ST<-makeSymbolTable(a)
 makeProductionTable(a,ST)
 
 }
+\seealso{
+Other Compiler Steps: 
+\code{\link{compileShortPT}()},
+\code{\link{makeStartSymbol}()},
+\code{\link{makeSymbolTable}()}
+}
+\concept{Compiler Steps}

@@ -25,3 +25,10 @@ A data frame with the columns
 makeSymbolTable(booleanGrammar()$BNF)
 
 }
+\seealso{
+Other Compiler Steps: 
+\code{\link{compileShortPT}()},
+\code{\link{makeProductionTable}()},
+\code{\link{makeStartSymbol}()}
+}
+\concept{Compiler Steps}

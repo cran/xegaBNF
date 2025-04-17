@@ -1,0 +1,38 @@
+
+-------------------------------------------------------------------------
+  xegaBNF                                                              News
+-------------------------------------------------------------------------
+
+Version 1.0.0.1 (2024-07-10)
+
+- Documentation improved.
+- newBNF(): eol are changed into spaces. 
+            Reason: Grammar symbols are separated by blanks. 
+
+Version 1.0.0.2 (2025-03-04)
+
+- compileShortPT(): provides for each non-terminal symbol 
+          at least one production rule which generates a list 
+          of one or more terminal symbols.
+
+- BNFhelpers.R: The functions needed for compileShortPT().
+
+- printPT(): Print a production table in symbolic form.
+
+Version 1.0.0.3 (2025-03-12)
+
+- bindKvariables(): Helper for assigning variables to values (semantics)
+
+- variableNamesBNF(): Generate k BNF rules for variables. 
+
+- variableNamesLHS(): Generate an EBNF rule for k variables. 
+
+Version 1.0.0.4 (2025-03-13)
+
+- preBNF(): Preprocessor for macros (R-code) in grammar files.
+            Uses pastePart(), evenMacro(), exsistMacro()
+ 
+Version 1.0.0.5 (2025-04-02)
+
+- dataframePT(): Return a production table as a (readable) dataframe.  
+

@@ -2,6 +2,7 @@
 % Please edit documentation in R/xegaBNF-package.R
 \docType{package}
 \name{xegaBNF}
+\alias{xegaBNF-package}
 \alias{xegaBNF}
 \title{Package xegaBNF}
 \description{
@@ -158,16 +159,16 @@ the last two packages:
 }}
 }
 
+\section{URL}{
+ \url{https://github.com/ageyerschulz/xegaBNF}
+}
+
 \section{Copyright}{
  (c) 2023 Andreas Geyer-Schulz
 }
 
 \section{License}{
  MIT
-}
-
-\section{URL}{
- <https://github.com/ageyerschulz/xegaBNF>
 }
 
 \section{Installation}{
@@ -179,6 +180,13 @@ Backus, J. W., Bauer, F. L., Green, J., Katz, C., McCarthy, J.,
   Naur, Peter, Perlis, A. J., Ruthishauser, H.,  and Samelson, K.
   (1962)
   Revised Report on the Algorithmic Language ALGOL 60, IFIP, Rome.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/ageyerschulz/xegaBNF}
+}
+
 }
 \author{
 Andreas Geyer-Schulz

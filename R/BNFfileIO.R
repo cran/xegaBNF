@@ -28,6 +28,29 @@ booleanGrammar<-function()
 }
 #booleanGrammar<-newBNF("~/dev/cran/xega/xegaBNF/BooleanGrammar.txt")
 
+#' A constant function which returns the BNF (Backus-Naur Form) 
+#' of a context-free grammar for the XOR problem with k boolean variables.
+#'
+#' @return A named list with $filename and  $BNF, 
+#'         the grammar of a boolean grammar with two variables and
+#'         the boolean functions AND, OR, and NOT.
+#'
+#' @examples
+#' booleanGrammarK()
+#' @export
+booleanGrammarK<-function()
+{
+   fn<-"~/dev/cran/xega/xegaBNF/BooleanGrammarK.txt"
+   bnf<-"S := <fe>; <fe> := <f0> | "
+   bnf<-paste(bnf, "  <f1> \"(\" <fe> \")\" | ")
+   bnf<-paste(bnf, " <f2> \"(\" <fe> \",\" <fe> \")\"; ")
+   bnf<-paste(bnf, " <f0> := //R// variableNamesLHS(\"D\", k=k) //R//  \"; ")
+   bnf<-paste(bnf, " <f1> := \"NOT\"; ")
+   bnf<-paste(bnf, "  <f2> := \"OR\" | \"AND\"; ")
+   return(list(filename=fn, BNF=bnf))
+}
+
+#booleanGrammar<-newBNF("~/dev/cran/xega/xegaBNF/BooleanGrammar.txt")
 #' Write BNF into text file.
 #'
 #' @description \code{writeBNF()} writes a character string into a textfile.
@@ -122,7 +145,7 @@ newBNF<-function(filename, eol="\n")
 {
 parm<-function(x){function() {return(x)}}
 b<-readBNF(filename)
-b$BNF<-gsub(eol, "", b$BNF)
+b$BNF<-gsub(eol, " ", b$BNF)
 f<-parm(b)
 x<-f()
 return(f)

@@ -23,10 +23,12 @@ G$filename<-"TestReadWriteBNF.txt"
 if(file.exists(G$filename)) {file.remove(G$filename)}
 f<-writeBNF(G)
 G1<-readBNF(G$filename, eol="\n")
+G2<-readBNF(G$filename)
 expect_identical(G, G1)
 GBNFfunction<-newBNF(G$filename)
 G3<-GBNFfunction()
-expect_identical(identical(G$BNF, G3$BNF), TRUE)
+G2$BNF<-gsub("\n", " ", G2$BNF)
+expect_identical(identical(G2$BNF, G3$BNF), TRUE)
 if(file.exists(G$filename)) {file.remove(G$filename)}
 }
 )

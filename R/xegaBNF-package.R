@@ -149,12 +149,11 @@
 #'
 #' @name xegaBNF
 #' @aliases xegaBNF
-#' @docType package
 #' @title Package xegaBNF
 #' @author Andreas Geyer-Schulz
+#' @section URL: \url{https://github.com/ageyerschulz/xegaBNF}
 #' @section Copyright: (c) 2023 Andreas Geyer-Schulz
 #' @section License: MIT
-#' @section URL: <https://github.com/ageyerschulz/xegaBNF>
 #' @section Installation: From CRAN by \code{install.packages('xegaBNF')}
-NULL
+"_PACKAGE"
 

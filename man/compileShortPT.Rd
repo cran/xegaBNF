@@ -30,17 +30,40 @@ A (short) production table is a named list with 2 columns.
 \details{
 \code{compileShortPT()} starts with production rules whose 
          right-hand side contains only terminals. 
-         It incrementally builds up the new PT until at least one
-         production rule sequence from a non-terminal to a terminal symbol.
+         It incrementally builds up the new PT until in the new PT 
+         at least one
+         production rule exists for each non-terminal 
+         which replaces the non-terminal symbol by a list 
+         of terminal symbols.
 
-         The short production rule provides for each non-terminal 
+         The short production rule table provides for each non-terminal 
          symbol a minimal finite derivation into terminals. 
+         It contains a finite subset of the context-free language 
+         as defined by the grammar \code{G}.
          Instead
          of the full production table, it is used
          for generating depth-bounded derivation trees.
+         The first idea of defining such a finite part of the language
+         is due to M. P. Schützenberger (1966).
 }
 \examples{
 g<-compileBNF(booleanGrammar())
 compileShortPT(g)
 
 }
+\references{
+Schützenberger, M. P. (1966): 
+        Classification of Chomsky Languages. In: 
+        Steel, T. B. Jr. (Ed.) 
+        Formal Language Description Languages for Computer Programming. 
+        Proceedings of the IFIP Workshop on Formal 
+        Language Description Languages.
+        North-Holland, Amsterdam, 100 -104.
+}
+\seealso{
+Other Compiler Steps: 
+\code{\link{makeProductionTable}()},
+\code{\link{makeStartSymbol}()},
+\code{\link{makeSymbolTable}()}
+}
+\concept{Compiler Steps}

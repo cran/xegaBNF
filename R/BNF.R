@@ -21,6 +21,8 @@
 #' @return A data frame with the columns 
 #'    \code{Symbols}, \code{NonTerminal}, and \code{SymbolID}.
 #' 
+#' @family Compiler Steps
+#'
 #' @examples
 #' makeSymbolTable(booleanGrammar()$BNF)
 #'
@@ -246,6 +248,8 @@ makeRule<-function(Rule, ST)
 #'         }
 #'         The non-terminal identifier \code{LHS[i]} derives into \code{RHS[i]}.
 #'
+#' @family Compiler Steps
+#'
 #' @examples
 #' a<-booleanGrammar()$BNF
 #' ST<-makeSymbolTable(a)
@@ -355,6 +359,8 @@ derive<-function(RuleIndex, RHS){return(RHS[[RuleIndex]])}
 #' 
 #' @return The numerical identifier of the start symbol of the BNF. 
 #'
+#' @family Compiler Steps
+#'
 #' @examples
 #' a<-booleanGrammar()$BNF
 #' ST<-makeSymbolTable(a)
@@ -384,14 +390,21 @@ makeStartSymbol<-function(BNF, ST)
 #' 
 #' @details \code{compileShortPT()} starts with production rules whose 
 #'          right-hand side contains only terminals. 
-#'          It incrementally builds up the new PT until at least one
-#'          production rule sequence from a non-terminal to a terminal symbol.
+#'          It incrementally builds up the new PT until in the new PT 
+#'          at least one
+#'          production rule exists for each non-terminal 
+#'          which replaces the non-terminal symbol by a list 
+#'          of terminal symbols.
 #' 
-#'          The short production rule provides for each non-terminal 
+#'          The short production rule table provides for each non-terminal 
 #'          symbol a minimal finite derivation into terminals. 
+#'          It contains a finite subset of the context-free language 
+#'          as defined by the grammar \code{G}.
 #'          Instead
 #'          of the full production table, it is used
 #'          for generating depth-bounded derivation trees.
+#'          The first idea of defining such a finite part of the language
+#'          is due to M. P. Schützenberger (1966).
 #'
 #' @return A (short) production table is a named list with 2 columns.
 #'         The first column
@@ -402,37 +415,55 @@ makeStartSymbol<-function(BNF, ST)
 #'         vector of vectors of numerical identifiers. 
 #'         \code{LHS[i]} derives into \code{RHS[i]}.
 #'
+#' @references Schützenberger, M. P. (1966): 
+#'         Classification of Chomsky Languages. In: 
+#'         Steel, T. B. Jr. (Ed.) 
+#'         Formal Language Description Languages for Computer Programming. 
+#'         Proceedings of the IFIP Workshop on Formal 
+#'         Language Description Languages.
+#'         North-Holland, Amsterdam, 100 -104. 
+#'
+#' @family Compiler Steps
+#'
 #' @examples
 #' g<-compileBNF(booleanGrammar())
 #' compileShortPT(g)
 #'
 #' @export
 compileShortPT<-function(G)
-{
-ST<-G$ST
-
-allTerminal<-function(symbols)
-{ return(Reduce(as.logical(unlist(
-	 lapply(symbols,FUN=isTerminal, ST=ST))), f="&")) }
+{ ST<-G$ST
   RHS<-G$PT$RHS
   LHS<-G$PT$LHS
-  Nonterminals<-ST[as.logical(ST[,2]),3]
-  RHSshort<-list()
-  LHSshort<-vector("integer")
-
-while(length(Nonterminals)>0)
-{ finiterules<-unlist(lapply(RHS, FUN=allTerminal))
-  RHSshort<-append(RHSshort, RHS[finiterules])
-  LHSshort<-c(LHSshort,LHS[finiterules])
-  RHS<-RHS[!finiterules]
-  LHS<-LHS[!finiterules]
-  fNTs<-unique(LHSshort)
-  ST[fNTs,2]<-rep(0,length(fNTs))
-  Nonterminals<-Nonterminals[(!Nonterminals %in% fNTs)] }
-  PT<-list()
-  PT[["LHS"]]<-LHSshort
-  PT[["RHS"]]<-RHSshort
-  return(PT) }
+  nonTerminals<-nonTerminalsOfG(G)
+  finiteRules<-finiteRulesOfG(G)
+  directRecursiveRules<-directRecursion(G)
+  restOfTheRules<-!(finiteRules | directRecursiveRules)
+# Finite Rules. 
+  SPT<-newPT(LHS=LHS[finiteRules], RHS=RHS[finiteRules])
+  finiteNTs<-unique(SPT$LHS)
+# if all non-terminals have a finite branch, we are done.
+if (length(finiteNTs)==length(nonTerminals)) {PT<-SPT; return(PT)}
+# Rest
+restPT<-newPT(LHS=LHS[restOfTheRules], RHS=RHS[restOfTheRules])
+# If only one rule is left, we have to expand the rule, and we are done.
+if (length(restPT$LHS)==1) 
+   {PT<-expandRules(rPT=restPT, SPT=SPT, G); return(PT)}
+# If more than one rule is left, we have to loop ...
+# 1. find the next rule which depends only on fNTS.
+# 2. expandRules.
+# 3. termination: we have rules for all NTS in fNTS.
+repeat {
+   finiteNTs<-unique(SPT$LHS)
+   if (length(finiteNTs)==length(nonTerminals)) {PT<-SPT; return(PT)}
+   nxtRules<-findNextRuleForExpansion(restPT, finiteNTs, G)
+### Smallest expansion only!
+   expPT<-newPT(LHS=restPT$LHS[nxtRules], RHS=restPT$RHS[nxtRules])
+   small<-smallestRules(expPT)
+   expPTsmall<-newPT(LHS=expPT$LHS[small], RHS=expPT$RHS[small])
+   SPT<-expandRules(rPT=expPTsmall, SPT=SPT, G)
+   index<-!((1:length(restPT$LHS)) %in% nxtRules)
+   restPT<-newPT(restPT$LHS[index], restPT$RHS[index])}
+}
 
 # (6) Compile BNF 
 

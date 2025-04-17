@@ -1,7 +1,7 @@
 Package: xegaBNF
 Title: Compile a Backus-Naur Form Specification into an R Grammar
         Object
-Version: 1.0.0.0
+Version: 1.0.0.5
 Authors@R: 
     person(given = "Andreas",
            family = "Geyer-Schulz",
@@ -22,17 +22,19 @@ Description: Translates a BNF (Backus-Naur Form) specification of a
              "Revised Report on the Algorithmic Language ALGOL 60".
              (ALGOL60 standards page <http://www.algol60.org/2standards.htm>,
               html-edition <https://www.masswerk.at/algol60/report.htm>)
-             The grammar compiler is based on the APL2 implementation in 
+             A preprocessor for macros which expand to standard BNF 
+             is included. 
+             The grammar compiler is an extension of the APL2 implementation in 
              Geyer-Schulz, Andreas (1997, ISBN:978-3-7908-0830-X).
 License: MIT + file LICENSE
-URL: <https://github.com/ageyerschulz/xegaBNF>
+URL: https://github.com/ageyerschulz/xegaBNF
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Suggests: testthat (>= 3.0.0)
 NeedsCompilation: no
-Packaged: 2024-02-04 14:39:48 UTC; dj2333
+Packaged: 2025-04-16 09:35:14 UTC; dj2333
 Author: Andreas Geyer-Schulz [aut, cre]
     (<https://orcid.org/0009-0000-5237-3579>)
 Maintainer: Andreas Geyer-Schulz <Andreas.Geyer-Schulz@kit.edu>
 Repository: CRAN
-Date/Publication: 2024-02-05 20:50:09 UTC
+Date/Publication: 2025-04-17 16:20:02 UTC
